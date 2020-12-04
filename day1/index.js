@@ -21,12 +21,6 @@ const validPasswordsPart1 = () => {
 return validPasswords;
 }
 
-const locations = (substring,string) =>{
-  var a=[],i=-1;
-  while((i=string.indexOf(substring,i+1)) >= 0) a.push(i+1);
-  return a;
-}
-
 const validPasswordsPartTwo = () => {
   let  validPasswords=0;
   for(const input of inputs) {
@@ -37,7 +31,6 @@ const validPasswordsPartTwo = () => {
       const allowedChar = input.match(/(\w:)/g)[0].substr(0,1);
       let password = Array.from(input.split(':')[1])
       
-      const passLocations = locations(allowedChar, password);
       if((password[indexOne] === allowedChar && password[indexTwo] !== allowedChar) || password[indexOne] !== allowedChar && password[indexTwo] === allowedChar) {
         validPasswords++;
       }

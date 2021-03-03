@@ -17,8 +17,7 @@ jobs:
       - name: Run if two environments
         if: steps.getenvlength.outputs.environments == 2
         run: |
-          echo ${{github.event.client_payload.env[0]}}
-          echo ${{github.event.client_payload.env[1]}}
+          echo ${{ join(github.event.client_payload.env, ' and ') }}
       - name: Run if only one environment
         if: steps.getenvlength.outputs.environments == 1
         run: |

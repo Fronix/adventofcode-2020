@@ -9,19 +9,18 @@
 name: Test arrays
 
 on:
-  issues:
-    - opened
+  workflow_dispatch:
+    inputs:
+      arrWithTwo: ['TEST', 'TEST1']
+      arrWithOne: ['TEST']
 
 jobs:
   test:
-    env:
-      arrWithTwo: "['TEST', 'TEST1']"
-      arrWithOne: "['TEST']"
     runs-on: ubuntu-latest
     steps:
       - name: Run this if index 1 is not null
-        if: ${{env.arrWithTwo[1] != null }}
+        if: ${{github.event.inputs.arrWithTwo[1] != null }}
         run: echo "FOUND index 1!"
       - name: Run this if index 1 is null
-        if: ${{ env.arrWithTwo[1] == null }}
-        run: echo "DID NOT FIND index 1"
+        if: ${{ github.event.inputs.arrWithTwo[1] == null }}
+        run: echo "DID NOT FIND index 1!"

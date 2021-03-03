@@ -10,7 +10,7 @@ jobs:
         if: github.event.client_payload.branch != 'master'
         shell: bash
         run: |
-          env=${{ github.event.client_payload.env }}
+          env='${{ github.event.client_payload.env }}'
           echo $env
           ISFEATURE=$($env | jq -c '.[] | contains("QA-FEATURE")')
           if [ISFEATURE = "true"]

@@ -5,11 +5,11 @@ on:
       arrWithTwo:
         description: 'Two length array'
         required: true
-        default: ['TEST', 'TEST1']
+        default: "['TEST', 'TEST1']"
       arrWithOne:
         description: 'One length array'
         required: false
-        default: ['TEST']
+        default: "['TEST']"
 
 
       #arrWithTwo: ['TEST', 'TEST1']

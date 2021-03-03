@@ -2,19 +2,25 @@ name: Manually triggered workflow
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Person to greet'
+      arrWithTwo:
+        description: 'Two length array'
         required: true
-        default: 'Mona the Octocat'
-      home:
-        description: 'location'
+        default: ['TEST', 'TEST1']
+      arrWithOne:
+        description: 'One length array'
         required: false
-        default: 'The Octoverse'
+        default: ['TEST']
 
+
+      #arrWithTwo: ['TEST', 'TEST1']
+      #arrWithOne: ['TEST']
 jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo "Hello ${{ github.event.inputs.name }}!"
-        echo "- in ${{ github.event.inputs.home }}!"
+      - name: Run this if index 1 is not null
+        if: ${{github.event.inputs.arrWithTwo[1] != null }}
+        run: echo "FOUND index 1!"
+      - name: Run this if index 1 is null
+        if: ${{ github.event.inputs.arrWithTwo[1] == null }}
+        run: echo "DID NOT FIND index 1!"

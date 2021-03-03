@@ -15,7 +15,7 @@ jobs:
           echo $envs
           ISFEATURE=$($envs | jq -c '.[] | contains("QA-FEATURE")')
           echo $ISFEATURE
-          if [ $ISFEATURE = "true" ]
+          if [[ $ISFEATURE = "true" ]]
           then
             echo "BUILD_VERSION=$(date +"%Y.%m.%d.%M%S-feature")" >> $GITHUB_ENV
           else

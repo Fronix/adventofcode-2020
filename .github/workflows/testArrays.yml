@@ -1,0 +1,27 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno and run tests across stable and nightly builds on Windows, Ubuntu and macOS.
+# For more information see: https://github.com/denolib/setup-deno
+
+name: Test arrays
+
+on:
+  issues:
+    - opened
+
+jobs:
+  test:
+    env:
+      arrWithTwo: "['TEST', 'TEST1']"
+      arrWithOne: "['TEST']"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run this if index 1 is not null
+        if: ${{env.arrWithTwo[1] != null }}
+        run: echo "FOUND index 1!"
+      - name: Run this if index 1 is null
+        if: ${{ env.arrWithTwo[1] == null }}
+        run: echo "DID NOT FIND index 1"

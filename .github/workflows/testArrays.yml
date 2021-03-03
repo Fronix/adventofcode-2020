@@ -1,26 +1,22 @@
 name: Manually triggered workflow
 on:
-  workflow_dispatch:
-    inputs:
-      arrWithTwo:
-        description: 'Two length array'
-        required: true
-        default: "['TEST', 'TEST1']"
-      arrWithOne:
-        description: 'One length array'
-        required: false
-        default: "['TEST']"
-
-
-      #arrWithTwo: ['TEST', 'TEST1']
-      #arrWithOne: ['TEST']
+  repository_dispatch:
+  
 jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Run this if index 1 is not null
-        if: ${{toJson(github.event.inputs.arrWithTwo[1]) != null }}
+      - name: get arr length
+        id: getenvlength
+        env:
+          envs: ${{ toJson(github.event.client_payload.branch) }}
+        run: |
+           echo "${{github.event.inputs.arrWithTwo}}"
+           LL=$(echo $envs | jq '. | length')
+           echo "::set-output name=environments::$LL"
+      - name: Run if two environments
+        if: steps.getenvlength.outputs.environments == 2
         run: echo "FOUND index 1!"
-      - name: Run this if index 1 is null
-        if: ${{ toJson(github.event.inputs.arrWithTwo[1]) == null }}
+      - name: Run if only one environment
+        if: steps.getenvlength.outputs.environments == 1
         run: echo "DID NOT FIND index 1!"

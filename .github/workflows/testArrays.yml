@@ -9,10 +9,11 @@ jobs:
       - name: Set dev version env
         if: github.event.client_payload.branch != 'master'
         shell: bash
+        env:
+          envs: ${{ toJson(github.event.client_payload.env) }}
         run: |
-          env='${{ github.event.client_payload.env }}'
-          echo $env
-          ISFEATURE=$($env | jq -c '.[] | contains("QA-FEATURE")')
+          echo $envs
+          ISFEATURE=$($envs | jq -c '.[] | contains("QA-FEATURE")')
           if [ISFEATURE = "true"]
           then
             echo "BUILD_VERSION=$(date +"%Y.%m.%d.%M%S-feature")" >> $GITHUB_ENV

@@ -9,9 +9,9 @@ jobs:
       - name: get arr length
         id: getenvlength
         env:
-          envs: ${{ toJson(github.event.client_payload.branch) }}
+          envs: ${{ toJson(github.event.client_payload.env) }}
         run: |
-           echo "${{github.event.inputs.arrWithTwo}}"
+           echo "$envs"
            LL=$(echo $envs | jq '. | length')
            echo "::set-output name=environments::$LL"
       - name: Run if two environments

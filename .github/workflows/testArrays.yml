@@ -21,4 +21,4 @@ jobs:
           else
             echo "BUILD_VERSION=$(date +"%Y.%m.%d.%M%S-${{ github.event.client_payload.branch }}")" >> $GITHUB_ENV
           fi
-          echo $BUILD_VERSION
+          echo ${{env.BUILD_VERSION}}

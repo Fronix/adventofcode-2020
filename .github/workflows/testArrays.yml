@@ -12,10 +12,8 @@ jobs:
           envs: ${{ toJson(github.event.client_payload.env) }}
         run: |
           echo $envs
-          ISFEATURE=$($envs | jq -c '.[] | contains("QA-FEATURE")')
-          echo $ISFEATURE
-          if [[ $ISFEATURE = "true" ]]
-          then
+          echo $envs | jq -c '.[] | contains("QA-FEATURE")'
+          if $envs | jq -c '.[] | contains("QA-FEATURE")' > /dev/null; then
             echo "BUILD_VERSION=$(date +"%Y.%m.%d.%M%S-feature")" >> $GITHUB_ENV
           else
             echo "BUILD_VERSION=$(date +"%Y.%m.%d.%M%S-${{ github.event.client_payload.branch }}")" >> $GITHUB_ENV

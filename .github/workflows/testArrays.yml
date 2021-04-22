@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: GitHub Actions Slack integration
-        uses: meridium/slack@v1.2.9-bulkbogan
+        uses: meridium/slack@v1.2.9-bulkbogan-test
         with:
           status: starting
           channel: '#bot-test'

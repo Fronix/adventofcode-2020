@@ -4,19 +4,30 @@ on:
   
 jobs:
   say_hello:
+    env:
+      working-directory: ./
+      frontend-dir: ./frontend
+      backend-dir: ./backend/backend/IvoRegister.EService
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      ICON_URL: https://avatars.slack-edge.com/2020-04-29/1092826931749_6ccbae7250fb01b99dda_192.png
     runs-on: ubuntu-latest
     steps:
-      - name: Set dev version env
-        if: github.event.client_payload.branch != 'master'
+      - name: GitHub Actions Slack integration
+        uses: meridium/slack@v1.2.8-bulkbogan
+        with:
+          status: starting
+          channel: '#bot-test'
+          username: 'Bulk Bogan'
+          iconUrl: ${{env.ICON_URL}}
+          octopusChannel: ${{ github.event.client_payload.channel }}
+          octopusEnv: "${{ github.event.client_payload.frontendEnv }} and ${{ github.event.client_payload.backendEnv }}"
+          startedBy: ${{ github.event.client_payload.user }}
+          skipDeploy: ${{ github.event.client_payload.skipDeploy }}
+      - name: Test deploy
+        if: github.event.client_payload.skipDeploy != 'true'
         shell: bash
-        env:
-          envs: ${{ toJson(github.event.client_payload.env) }}
-        run: |
-          if echo "$envs" | jq -e '.[] | contains("QA-FEATURE")' > /dev/null; then
-            echo "BUILD_VERSION=$(date +"%Y.%m.%d.%H%M-feature")" >> $GITHUB_ENV
-          else
-            echo "BUILD_VERSION=$(date +"%Y.%m.%d.%H%M-${{ github.event.client_payload.branch }}")" >> $GITHUB_ENV
-          fi
-      - name: Set dev version env
+        run: echo "Deploying"
+      - name: Test not deploy
+        if: github.event.client_payload.skipDeploy != 'false'
         shell: bash
-        run: echo "${{ env.BUILD_VERSION }}"
+        run: echo "Skipping deployment"
